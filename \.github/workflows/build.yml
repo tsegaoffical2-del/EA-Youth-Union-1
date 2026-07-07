@@ -1,0 +1,25 @@
+name: Build EA Youth Union APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Send to VoltBuilder
+        env:
+          VOLT_EMAIL: ${{ secrets.VOLTBUILDER_EMAIL }}
+          VOLT_PASSWORD: ${{ secrets.VOLTBUILDER_PASSWORD }}
+        run: |
+          curl -X POST \
+            -F "data={\"platform\":\"android\", \"email\":\"$VOLT_EMAIL\", \"password\":\"$VOLT_PASSWORD\"}" \
+            -F "upload=@EA Youth Union.zip" \
+            https://api.voltbuilder.com/v1/build
